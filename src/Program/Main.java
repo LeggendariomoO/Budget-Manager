@@ -19,9 +19,7 @@ public class Main {
 		}
 		io.chiudi();
 	}
-	public void insert(IO io) {
-		double tempDouble=io.leggiDouble();
-	}
+
 }
 
 
