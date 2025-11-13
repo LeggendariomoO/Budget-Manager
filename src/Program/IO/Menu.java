@@ -16,8 +16,9 @@ public class Menu {
 		comandi.createDatabase();
 		while(true) {
 			clearConsole();
-			io.mostraMessaggio("##################Menu` Principale##################\n"
-					+ "Seleziona ciò che vuoi fare\n"
+			io.mostraMessaggio("##################Menu` Principale##################");
+			System.out.printf("Budget disponibile:%.2f\n",comandi.getSum());
+			io.mostraMessaggio("Seleziona ciò che vuoi fare\n"
 					+ "1)Inserire dei valori nel database\n"
 					+ "2)eliminare dei valori dal database\n"
 					+ "3)Stampare a schermo i valori del database\n"
