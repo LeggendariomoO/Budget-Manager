@@ -18,8 +18,8 @@ public class Commands {
 		float spesa=io.leggiFloat();
 		io.mostraMessaggio("Inserisci il causale");
 		String causale=io.leggiRiga();
-		LocalDate data=selectDate();
-		table.insertValues(spesa, causale,data.toString());		
+		LocalDate date=chooseDate();
+		table.insertValues(spesa, causale,date.toString());		
 	}
 
 	public void insertUscita(){
@@ -27,14 +27,14 @@ public class Commands {
 		float spesa=io.leggiFloat();
 		io.mostraMessaggio("Inserisci il causale");
 		String causale=io.leggiRiga();
-		LocalDate data=selectDate();
-		table.insertValues(-spesa, causale,data.toString());	
+		LocalDate date=chooseDate();
+		table.insertValues(-spesa, causale,date.toString());	
 	}
-
+	
 	public void printWholeTable() {
 		table.selectAllValues();
 	}
-
+	
 	public void createDatabase() {
 		table.createDatabase();
 		table.createTable();
@@ -47,66 +47,68 @@ public class Commands {
 		io.Stop();
 	}
 	public void dropTable() {
-		io.mostraMessaggio("Sei sicuro di voler eliminare tutto? Scrivi 5 se confermi o qualsiasi altro valore se non vuoi procedere");
+		io.mostraMessaggio("Sei sicuro di voler cancellare tutto? Digita 5 se sei sicuro (qualsiasi altro valore annullerà tutto)");
 		int check=io.leggiInt();
+		if (check!=5) {
+			return;
+		}
+		table.dropTable();
+		io.mostraMessaggio("La table e` stata eliminata");
+		table.createTable();
+		io.Stop();
+	}
+	
+	public LocalDate chooseDate() {
+		ClearScreen.clearConsole();
+		LocalDate date=LocalDate.now();
+		io.mostraMessaggio("##################Menu` Giorno##################\n"
+				+ "Scegli una delle seguenti opzioni:"
+				+ "1)Oggi\n"
+				+ "2)Ieri\n"
+				+ "3)L'altro ieri\n"
+				+ "4)Domani\n"
+				+ "5)Custom\n"
+				+ "(qualsiasi altro valore darà come default oggi):");
+		int check= io.leggiInt();
 		switch (check) {
+		case 2:
+			date=date.minusDays(1);
+			break;
+		case 3:
+			date=date.minusDays(2);
+			break;
+		case 4:
+			date=date.plusDays(1);
+			break;
 		case 5:
-			table.dropTable();
-			io.mostraMessaggio("La table e` stata eliminata");
-			table.createTable();
-			io.Stop();
+			date=insertDate();
 			break;
 		default:
-			return;}
+			break;
+		}
+		return date;
 	}
-
+	public LocalDate insertDate() {
+		while(true) {
+			ClearScreen.clearConsole();
+			io.mostraMessaggio("Inserisci il giorno della data:");
+			int day=io.leggiInt();
+			io.mostraMessaggio("Inserisci il mese della data:");
+			int month=io.leggiInt();
+			io.mostraMessaggio("Inserisci l'anno della data:");
+			int year=io.leggiInt();
+			try {
+				LocalDate date=LocalDate.of(year, month, day);
+				return date;
+			}catch (DateTimeException e) {
+				io.mostraMessaggio("Data non esistente, riprova");
+				io.Stop();
+			}
+		}
+	}
+	
 	public float getSum() {
 		return table.printSum();
 	}
 
-	public LocalDate selectDate() {
-		ClearScreen.clearConsole();;
-		io.mostraMessaggio("Seleziona una delle seguenti opzioni per la data:\n"
-				+ "1)Oggi\n"
-				+ "2)Ieri\n"
-				+ "3)AltroIeri\n"
-				+ "4)Custom Data\n"
-				+ "(qualsiasi altra opzione darà come default oggi):");
-		int check=io.leggiInt();
-		LocalDate data= LocalDate.now();
-		switch (check) {
-		case 2:
-			data=LocalDate.now().minusDays(1);
-			break;
-		case 3:
-			data=LocalDate.now().minusDays(2);
-			break;
-		case 4:	
-			data=insertDate();
-			break;
-		default:		
-			break;
-
-		}
-		return data;
-	}
-
-	public LocalDate insertDate() {
-		while(true) {
-			io.mostraMessaggio("Inserisci il giorno:");
-			int day=io.leggiInt();
-
-			io.mostraMessaggio("Inserisci il mese:");
-			int month=io.leggiInt();
-			io.mostraMessaggio("Inserisci il giorno:");
-			int year=io.leggiInt();
-			try {
-				LocalDate date = LocalDate.of(year, month, day);
-				return date;
-				}
-			catch (DateTimeException e) {
-				io.mostraMessaggio("Data non esiste, riprova\n");
-			}
-		}
-	}
 }

@@ -1,5 +1,4 @@
 package Program.IO;
-
 import Program.Commands.*;
 
 public class Menu {
