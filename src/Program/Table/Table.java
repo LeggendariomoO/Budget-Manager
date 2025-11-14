@@ -9,6 +9,7 @@ public class Table {
 	String dropTable;
 	String deleteId;
 	String selectSum;
+	String orderByDate;
 	public Table(){
 		url="jdbc:sqlite:my.db";
 		sql="Create table if not exists data("+"id integer primary key AUTOINCREMENT,\r\n"
@@ -17,10 +18,11 @@ public class Table {
 				+ "date text not null\r\n"
 				+ ");";
 		insert="insert into data (cifra, causale,date) values (?,?,?);\r\n";
-		selectAll="select * from data";
+		selectAll="select * from data order by date;";
 		dropTable="drop table if exists data;\r\n";
 		deleteId="delete from data where id = ?";
-		selectSum="select sum(all cifra) from data;";
+		selectSum="select sum(all cifra) from data";
+
 	}
 
 	public void createDatabase() {
