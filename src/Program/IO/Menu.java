@@ -1,4 +1,6 @@
 package Program.IO;
+import java.time.LocalDate;
+import java.time.DayOfWeek;
 import Program.Commands.*;
 
 public class Menu {
@@ -16,7 +18,7 @@ public class Menu {
 		while(true) {
 			clearConsole();
 			io.mostraMessaggio("##################Menu` Principale##################");
-			System.out.printf("Budget disponibile:%.2f\n",comandi.getSum());
+			System.out.printf("Budget disponibile:%.2f|Soldi spesi ultima settimana:%.2f\n",comandi.getSum(),-comandi.getSumOfWeek());
 			io.mostraMessaggio("Seleziona ciò che vuoi fare\n"
 					+ "1)Inserire dei valori nel database\n"
 					+ "2)eliminare dei valori dal database\n"
@@ -32,7 +34,7 @@ public class Menu {
 				MenuErase();
 				break;
 			case 3: 
-				MenuPrint();
+				MenuPrintChoice();
 				break;
 			default:
 				return;
@@ -61,13 +63,47 @@ public class Menu {
 			break;
 		}
 	}
-	public void MenuPrint() {
+	public void MenuPrintChoice() {
+		io.mostraMessaggio("##################Menu` Stampa##################\n"
+				+ "Seleziona una delle seguenti opzioni:\n"
+				+ "1)Ultima Settima\n"
+				+ "2)Ultimo Mese\n"
+				+ "3)Tutto lo storico\n"
+				+ "4)Custom\n"
+				+ "Scrivi qualsiasi altro valore per tornare indietro\n");
+		int check=io.leggiInt();
+		switch (check) {
+		case 1:
+			comandi.printTableByDate(LocalDate.now().with(DayOfWeek.MONDAY).toString(),LocalDate.now().with(DayOfWeek.SUNDAY).toString());
+			break;
+		case 2:
+			comandi.printTableByDate(LocalDate.now().withDayOfMonth(1).toString(),LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth()).toString());
+			break;
+		case 3:
+			comandi.printWholeTable();
+			break;
+		case 4:
+			io.mostraMessaggio("Inseriamo la prima data");
+			LocalDate date1=comandi.insertDate();
+			io.mostraMessaggio("Inseriamo la seconda data");
+			LocalDate date2=comandi.insertDate();
+			comandi.printTableByDate(date1.toString(), date2.toString());
+			break;
+		default:
+			break;
+		}
+		io.Stop();
+		return;
+	}	
+
+
+	/*	public void MenuPrint() {
 		io.mostraMessaggio("##################Menu` Stampa##################\n"
 				+ "Print Table:");
 		comandi.printWholeTable();
 		io.Stop();
 		return;
-	}
+	}*/
 	public void clearConsole() {
 		ClearScreen.clearConsole();
 	}
