@@ -35,6 +35,10 @@ public class Commands {
 		table.selectAllValues();
 	}
 	
+	public void printTableByDate(String date1,String date2) {
+		table.selectValuesByDate(date1, date2);
+	}
+	
 	public void createDatabase() {
 		table.createDatabase();
 		table.createTable();
@@ -62,7 +66,7 @@ public class Commands {
 		ClearScreen.clearConsole();
 		LocalDate date=LocalDate.now();
 		io.mostraMessaggio("##################Menu` Giorno##################\n"
-				+ "Scegli una delle seguenti opzioni:"
+				+ "Scegli una delle seguenti opzioni:\n"
 				+ "1)Oggi\n"
 				+ "2)Ieri\n"
 				+ "3)L'altro ieri\n"
@@ -109,6 +113,9 @@ public class Commands {
 	
 	public float getSum() {
 		return table.printSum();
+	}
+	public float getSumOfWeek() {
+		return table.printExpensiesWeek();
 	}
 
 }

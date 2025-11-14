@@ -9,7 +9,9 @@ public class Table {
 	String dropTable;
 	String deleteId;
 	String selectSum;
+	String selectSumLastWeek;
 	String orderByDate;
+	String selectAllByDate;
 	public Table(){
 		url="jdbc:sqlite:my.db";
 		sql="Create table if not exists data("+"id integer primary key AUTOINCREMENT,\r\n"
@@ -22,7 +24,8 @@ public class Table {
 		dropTable="drop table if exists data;\r\n";
 		deleteId="delete from data where id = ?";
 		selectSum="select sum(all cifra) from data";
-
+		selectAllByDate="Select * from data where date between ? and ? order by date;";
+		selectSumLastWeek="select sum(all cifra) from data where cifra <0";
 	}
 
 	public void createDatabase() {
@@ -69,13 +72,32 @@ public class Table {
 			System.err.println(e.getMessage());
 		}
 	}*/
+
+	public void printSelect(ResultSet rs)throws SQLException {
+		while (rs.next()) {
+			System.out.printf("%d|%.2f|%s|%s\n",rs.getInt("id"),rs.getFloat("cifra"),rs.getString("causale"),rs.getString("date"));}	
+	}
+
 	public void selectAllValues() {
 		try (var conn = DriverManager.getConnection(url);
 				var stmt = conn.createStatement();
 				var rs = stmt.executeQuery(selectAll)) {
-			while (rs.next()) {
-				System.out.printf("%d|%.2f|%s|%s\n",rs.getInt("id"),rs.getFloat("cifra"),rs.getString("causale"),rs.getString("date"));}
+			printSelect(rs);
 
+		}catch(SQLException e) {
+			System.err.println(e.getMessage());
+		}}
+
+	public void selectValuesByDate(String date1,String date2) {
+		try (var conn = DriverManager.getConnection(url);
+				var stmt = conn.prepareStatement(selectAllByDate);){
+			stmt.setString(1, date1);
+			stmt.setString(2, date2);
+
+			try(var rs = stmt.executeQuery()){ 
+
+				printSelect(rs);
+			}
 		}catch(SQLException e) {
 			System.err.println(e.getMessage());
 		}}
@@ -107,4 +129,17 @@ public class Table {
 			return 0;
 		}	
 	}
+	
+	public float printExpensiesWeek() {
+		try (var conn = DriverManager.getConnection(url);
+				var stmt = conn.createStatement();
+				var rs = stmt.executeQuery(selectSumLastWeek)) {
+			return rs.getFloat(1);
+
+		}catch(SQLException e) {
+			return 0;
+		}	
+	}
+
+
 }
