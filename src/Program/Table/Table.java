@@ -1,7 +1,12 @@
 package Program.Table;
 import java.sql.*;
+import java.io.File;
+import java.nio.file.*;
 
 public class Table {
+	String userHome;
+	String dbFolder;
+	Path dbPath;
 	String url;
 	String sql;
 	String insert;
@@ -13,7 +18,12 @@ public class Table {
 	String orderByDate;
 	String selectAllByDate;
 	public Table(){
-		url="jdbc:sqlite:my.db";
+		String userHome = System.getProperty("user.home"); 
+		String dbFolder = userHome + "\\Documents\\Budget-Manager";
+		File folder = new java.io.File(dbFolder);
+		folder.mkdirs();
+		
+		url="jdbc:sqlite:" + dbFolder+ "\\my.db";
 		sql="Create table if not exists data("+"id integer primary key AUTOINCREMENT,\r\n"
 				+ "cifra float,\r\n"
 				+ "causale text not null,\r\n"
