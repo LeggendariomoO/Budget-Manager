@@ -84,6 +84,7 @@ public class Table {
 	}*/
 
 	public void printSelect(ResultSet rs)throws SQLException {
+		System.out.println("Id|Cifra|Causale|Data");
 		while (rs.next()) {
 			System.out.printf("%d|%.2f|%s|%s\n",rs.getInt("id"),rs.getFloat("cifra"),rs.getString("causale"),rs.getString("date"));}	
 	}

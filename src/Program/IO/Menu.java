@@ -64,6 +64,7 @@ public class Menu {
 		}
 	}
 	public void MenuPrintChoice() {
+		clearConsole();
 		io.mostraMessaggio("##################Menu` Stampa##################\n"
 				+ "Seleziona una delle seguenti opzioni:\n"
 				+ "1)Ultima Settima\n"
@@ -74,15 +75,19 @@ public class Menu {
 		int check=io.leggiInt();
 		switch (check) {
 		case 1:
+			clearConsole();
 			comandi.printTableByDate(LocalDate.now().with(DayOfWeek.MONDAY).toString(),LocalDate.now().with(DayOfWeek.SUNDAY).toString());
 			break;
 		case 2:
+			clearConsole();
 			comandi.printTableByDate(LocalDate.now().withDayOfMonth(1).toString(),LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth()).toString());
 			break;
 		case 3:
+			clearConsole();
 			comandi.printWholeTable();
 			break;
 		case 4:
+			clearConsole();
 			io.mostraMessaggio("Inseriamo la prima data");
 			LocalDate date1=comandi.insertDate();
 			io.mostraMessaggio("Inseriamo la seconda data");
@@ -109,6 +114,7 @@ public class Menu {
 	}
 
 	public void MenuErase() {
+		clearConsole();
 		io.mostraMessaggio("##################Menu` Eliminazione##################\n"
 				+ "Seleziona ciò che vuoi fare\n"
 				+ "1)Eliminare un valore (dato l'id)\n"
