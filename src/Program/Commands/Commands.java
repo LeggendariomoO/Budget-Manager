@@ -1,6 +1,7 @@
 package Program.Commands;
 
 import java.time.DateTimeException;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 
 import Program.IO.IO;
@@ -115,7 +116,7 @@ public class Commands {
 		return table.printSum();
 	}
 	public float getSumOfWeek() {
-		return table.printExpensiesWeek();
+		return table.printExpensiesWeek(LocalDate.now().with(DayOfWeek.MONDAY).toString(),LocalDate.now().with(DayOfWeek.SUNDAY).toString());
 	}
 
 }
