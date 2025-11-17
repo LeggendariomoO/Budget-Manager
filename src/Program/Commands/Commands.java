@@ -116,7 +116,11 @@ public class Commands {
 		return table.printSum();
 	}
 	public float getSumOfWeek() {
-		return table.printExpensiesWeek(LocalDate.now().with(DayOfWeek.MONDAY).toString(),LocalDate.now().with(DayOfWeek.SUNDAY).toString());
+		float sum=table.printExpensiesWeek(LocalDate.now().with(DayOfWeek.MONDAY).toString(),LocalDate.now().with(DayOfWeek.SUNDAY).toString());
+		if (sum==0) {
+			return 0;
+		}
+		return -sum;
 	}
 
 }

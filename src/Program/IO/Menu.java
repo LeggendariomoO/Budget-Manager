@@ -18,7 +18,7 @@ public class Menu {
 		while(true) {
 			clearConsole();
 			io.mostraMessaggio("##################Menu` Principale##################");
-			System.out.printf("Budget disponibile:%.2f|Soldi spesi ultima settimana:%.2f\n",comandi.getSum(),-comandi.getSumOfWeek());
+			System.out.printf("Budget disponibile:%.2f|Soldi spesi ultima settimana:%.2f\n",comandi.getSum(),comandi.getSumOfWeek());
 			io.mostraMessaggio("Seleziona ciò che vuoi fare\n"
 					+ "1)Inserire dei valori nel database\n"
 					+ "2)eliminare dei valori dal database\n"
