@@ -22,7 +22,7 @@ public class Table {
 		String dbFolder = userHome + "\\Documents\\Budget-Manager";
 		File folder = new java.io.File(dbFolder);
 		folder.mkdirs();
-		
+
 		url="jdbc:sqlite:" + dbFolder+ "\\my.db";
 		sql="Create table if not exists data("+"id integer primary key AUTOINCREMENT,\r\n"
 				+ "cifra float,\r\n"
@@ -35,7 +35,7 @@ public class Table {
 		deleteId="delete from data where id = ?";
 		selectSum="select sum(all cifra) from data";
 		selectAllByDate="Select * from data where date between ? and ? order by date;";
-		selectSumLastWeek="select sum(all cifra) from data where cifra <0";
+		selectSumLastWeek="select sum(all cifra) from data where cifra <0 and date between ? and ?";
 	}
 
 	public void createDatabase() {
@@ -101,11 +101,11 @@ public class Table {
 
 	public void selectValuesByDate(String date1,String date2) {
 		try (var conn = DriverManager.getConnection(url);
-				var stmt = conn.prepareStatement(selectAllByDate);){
-			stmt.setString(1, date1);
-			stmt.setString(2, date2);
+				var pstmt = conn.prepareStatement(selectAllByDate);){
+			pstmt.setString(1, date1);
+			pstmt.setString(2, date2);
 
-			try(var rs = stmt.executeQuery()){ 
+			try(var rs = pstmt.executeQuery()){ 
 
 				printSelect(rs);
 			}
@@ -140,13 +140,15 @@ public class Table {
 			return 0;
 		}	
 	}
-	
-	public float printExpensiesWeek() {
-		try (var conn = DriverManager.getConnection(url);
-				var stmt = conn.createStatement();
-				var rs = stmt.executeQuery(selectSumLastWeek)) {
-			return rs.getFloat(1);
 
+	public float printExpensiesWeek(String date1, String date2) {
+		try (var conn = DriverManager.getConnection(url);
+				var pstmt = conn.prepareStatement(selectSumLastWeek);) {
+			pstmt.setString(1, date1);
+			pstmt.setString(2, date2);
+			try(var rs = pstmt.executeQuery();){
+				return rs.getFloat(1);
+			}
 		}catch(SQLException e) {
 			return 0;
 		}	
